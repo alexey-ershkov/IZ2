@@ -4,12 +4,7 @@
 
 #include "linear_search.h"
 
-int is_capital(char x) {
-    if (x >='A' && x <= 'Z')
-        return 1;
-    else
-        return 0;
-}
+
 
 int linear_str_search(char* input) {
     int i = 0, count = 0, max_counted = 0, state = 0;
@@ -39,9 +34,9 @@ double linear_search(char* input)
     char* string_mass = (char*)malloc(MB100);
     assert(string_mass);
     strcpy(string_mass, input);
-    int max = linear_str_search(string_mass);
-    printf("%d\n", max);
+    linear_str_search(string_mass);
     clock_t end = clock();
     double output = (double)(end - begin)/CLOCKS_PER_SEC;
+    free(string_mass);
     return output;
 }
