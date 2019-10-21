@@ -16,7 +16,7 @@ add_library(MyLibStatic STATIC ${LibSourses})
 add_library(MyLibShared SHARED ${LibSourses})
 
 add_executable(IZ2 main.c)
-target_link_libraries(IZ2 pthread MyLibShared)
+target_link_libraries(IZ2 pthread MyLibStatic)
 
 
 enable_testing()
