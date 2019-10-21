@@ -58,7 +58,7 @@ matrix:
             - clang
             - valgrind
       script:
-        - cmake -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" ..
+        - cmake CMakeLists.txt
         - make
         - ctest -T memcheck
 
