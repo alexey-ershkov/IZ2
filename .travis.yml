@@ -16,6 +16,8 @@ before_install:
   - travis_retry python2 -m pip install --user pexpect
   - travis_retry python3 -m pip install --user pytest
 
+install:
+  - cppcheck
 matrix:
   include:
 
@@ -91,6 +93,8 @@ matrix:
         - make IZ2
         - cd ..
         - bash <(curl -s https://codecov.io/bash)
+
+
     - os: linux
       env:
         - TEST="Cpplint"
@@ -106,7 +110,25 @@ matrix:
       compiler:
         - clang
       script:
-        - python cpplint.py --filter=-build/include_subdir,-legal/copyright,-runtime/printf,-readability/casting gtest.cpp
+        - python cpplint.py --filter=-build/include_subdir,-legal/copyright,-runtime/printf,-readability/casting gtest.cpp is_capital.c linear_search.c main.c parallel_search.c
+
+
+    - os: linux
+      env:
+        - TEST="CppCheck"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - python
+            - gcc
+            - g++
+      compiler:
+        - clang
+      script:
+        - cppcheck gtest.cpp
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
