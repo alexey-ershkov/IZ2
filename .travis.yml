@@ -50,17 +50,17 @@ matrix:
     - os: linux
       env:
         - TEST="Valgrind"
-        addons:
-          apt:
-            sources:
-              - ubuntu-toolchain-r-test
-            packages:
-              - clang
-              - valgrind
-        script:
-          - cmake -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" ..
-          - make
-          - ctest -T memcheck
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - valgrind
+      script:
+        - cmake -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" ..
+        - make
+        - ctest -T memcheck
 
 
 after_success:
