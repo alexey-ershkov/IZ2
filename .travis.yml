@@ -31,22 +31,6 @@ matrix:
 
     - os: linux
       env:
-        - TEST="Gcc"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc
-            - g++
-      compiler: gcc
-      script:
-        - cmake CMakeLists.txt
-        - make
-        - make IZ2
-
-    - os: linux
-      env:
         - TEST="UnitTest"
       addons:
         apt:
