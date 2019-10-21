@@ -27,7 +27,7 @@ matrix:
       script:
         - cmake CMakeLists.txt
         - make
-        - make IZ1
+        - make IZ2
 
     - os: linux
       env:
@@ -43,7 +43,7 @@ matrix:
       script:
         - cmake CMakeLists.txt
         - make
-        - make IZ1
+        - make IZ2
 
     - os: linux
       env:
