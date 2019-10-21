@@ -83,7 +83,22 @@ matrix:
         - make IZ2
         - cd ..
         - bash <(curl -s https://codecov.io/bash)
-
+    - os: linux
+      env:
+        - TEST="CppCheck"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - gcc
+            - g++
+      compiler: clang
+      script:
+        - cmake -DENABLE_CPPCHECK=ON 
+        - make
+        - make check
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
