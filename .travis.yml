@@ -17,7 +17,7 @@ before_install:
   - travis_retry python3 -m pip install --user pytest
 
 install:
-  - apt-get install cppcheck
+  - sudo apt-get install cppcheck
 matrix:
   include:
 
