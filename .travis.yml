@@ -56,11 +56,16 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - clang
+            - gcc
+            - g++
             - valgrind
+      compiler: clang
       script:
         - cmake CMakeLists.txt
         - make
         - ctest -T memcheck
+
+
 
 
 after_success:
