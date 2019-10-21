@@ -128,7 +128,7 @@ matrix:
       compiler:
         - clang
       script:
-        - cppcheck gtest.cpp
+        - cppcheck gtest.cpp is_capiltal.c linear_search.c main.c parallel_search.c
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
