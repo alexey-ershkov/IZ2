@@ -1,0 +1,69 @@
+language: cpp
+dist: trusty
+sudo: true
+
+branches:
+  only:
+    - master
+    - working
+
+
+matrix:
+  include:
+
+    - os: linux
+      env:
+        - TEST="Clang"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang
+            - gcc
+            - g++
+      compiler: clang
+      script:
+        - cmake CMakeLists.txt
+        - make
+        - make IZ1
+
+    - os: linux
+      env:
+        - TEST="Gcc"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc
+            - g++
+      compiler: gcc
+      script:
+        - cmake CMakeLists.txt
+        - make
+        - make IZ1
+
+    - os: linux
+      env:
+        - TEST="UnitTest"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang
+            - gcc
+            - g++
+      compiler: clang
+      script:
+        - cmake CMakeLists.txt
+        - make
+        - ctest
+
+
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
