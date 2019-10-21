@@ -65,7 +65,24 @@ matrix:
         - make
         - ctest -T memcheck
 
-
+    - os: linux
+      env:
+        - TEST="Codecov"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - gcc
+            - g++
+      compiler: clang
+      script:
+        - cmake -DENABLE_COVERAGE=ON
+        - make
+        - make test
+        - cd ..
+        - bash <(curl -s https://codecov.io/bash)
 
 
 after_success:
