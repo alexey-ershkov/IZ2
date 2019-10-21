@@ -85,20 +85,20 @@ matrix:
         - bash <(curl -s https://codecov.io/bash)
     - os: linux
       env:
-        - TEST="CppCheck"
+        - TEST="Cpplint"
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - clang
+            - python
             - gcc
             - g++
-      compiler: clang
+      compiler:
+        - clang
       script:
-        - cmake -DENABLE_CPPCHECK=ON 
-        - make
-        - make check
+        -python cpplint.py --filter=-build/include_subdir,-legal/copyright,-runtime/printf,-readability/casting gtest.cpp
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
