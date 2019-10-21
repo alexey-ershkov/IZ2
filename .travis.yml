@@ -63,7 +63,7 @@ matrix:
       script:
         - cmake CMakeLists.txt
         - make
-        - ctest -T memcheck
+        - IZ2 -T memcheck
 
     - os: linux
       env:
@@ -80,7 +80,7 @@ matrix:
       script:
         - cmake -DENABLE_COVERAGE=ON
         - make
-        - make test
+        - make IZ2
         - cd ..
         - bash <(curl -s https://codecov.io/bash)
 
