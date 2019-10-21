@@ -63,7 +63,7 @@ matrix:
       script:
         - cmake CMakeLists.txt
         - make
-        - IZ2 -T memcheck
+        - ctest -T memcheck
 
     - os: linux
       env:

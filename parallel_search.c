@@ -22,10 +22,8 @@ void* from_start(void* args) {
     int input_len = strlen(input);
     int state = 0;
     int count = 0;
-    for (int i = 0; i < input_len/2; ++i)
-    {
-        if (input[i] == '\'')
-        {
+    for (int i = 0; i < input_len/2; ++i) {
+        if (input[i] == '\'') {
             if (state) {
                 state = 0;
                 assert(!pthread_mutex_lock(mutex));
@@ -34,12 +32,12 @@ void* from_start(void* args) {
                     count = 0;
                 }
                 assert(!pthread_mutex_unlock(mutex));
-            }
-            else if (!state && is_capital(input[i+1]))
+            } else if (!state && is_capital(input[i+1])) {
                 state = 1;
-        }
-        else if (state)
+            }
+        } else if (state) {
             count++;
+        }
     }
     if (count != 0)
         buffer_start = count;
@@ -53,10 +51,8 @@ void* till_end(void* args) {
     int state = 2;
     int count = 0;
     int i = input_len/2 - 1;
-    while(input[i] != '\0')
-    {
-        if (input[i] == '\'')
-        {
+    while (input[i] != '\0') {
+        if (input[i] == '\'') {
             if (state == 2) {
                 buffer_end = count - 1;
                 count = 0;
@@ -70,12 +66,12 @@ void* till_end(void* args) {
                     count = 0;
                 }
                 assert(!pthread_mutex_unlock(mutex));
-            }
-            else if (state == 0 && is_capital(input[i+1]))
+            } else if (state == 0 && is_capital(input[i+1])) {
                 state = 1;
-        }
-        else if (state)
+            }
+        } else if (state) {
             count++;
+        }
         ++i;
     }
     return 0;
@@ -84,8 +80,8 @@ void* till_end(void* args) {
 int parallel_str_search(char* input) {
     pthread_t thread1;
     pthread_t thread2;
-    assert(!pthread_create(&thread1,NULL,from_start,input));
-    assert(!pthread_create(&thread2,NULL,till_end,input));
+    assert(!pthread_create(&thread1, NULL, from_start, input));
+    assert(!pthread_create(&thread2, NULL, till_end, input));
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
     if (buffer_start)
