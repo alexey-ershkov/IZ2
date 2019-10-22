@@ -5,8 +5,5 @@
 #include "is_capital.h"
 
 int is_capital(char x) {
-    if (x >='A' && x <= 'Z')
-        return 1;
-    else
-        return 0;
+    return (x >='A' && x <= 'Z');
 }

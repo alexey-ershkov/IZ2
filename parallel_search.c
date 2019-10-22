@@ -26,12 +26,18 @@ void* from_start(void* args) {
         if (input[i] == '\'') {
             if (state) {
                 state = 0;
-                assert(!pthread_mutex_lock(mutex));
+                if (!pthread_mutex_lock(mutex)) {
+                    printf("Mutex error\n");
+                    return -1;
+                }
                 if (count > data.max_counted) {
                     data.max_counted = count;
                     count = 0;
                 }
-                assert(!pthread_mutex_unlock(mutex));
+                if (!pthread_mutex_unlock(mutex)) {
+                    printf("Mutex error\n");
+                    return -1;
+                }
             } else if (!state && is_capital(input[i+1])) {
                 state = 1;
             }
@@ -60,12 +66,18 @@ void* till_end(void* args) {
             }
             if (state == 1) {
                 state = 0;
-                assert(!pthread_mutex_lock(mutex));
+                if (!pthread_mutex_lock(mutex)) {
+                    printf("Mutex error\n");
+                    return -1;
+                }
                 if (count > data.max_counted) {
                     data.max_counted = count;
                     count = 0;
                 }
-                assert(!pthread_mutex_unlock(mutex));
+                if (!pthread_mutex_unlock(mutex)) {
+                    printf("Mutex error\n");
+                    return -1;
+                }
             } else if (state == 0 && is_capital(input[i+1])) {
                 state = 1;
             }
@@ -80,8 +92,14 @@ void* till_end(void* args) {
 int parallel_str_search(char* input) {
     pthread_t thread1;
     pthread_t thread2;
-    assert(!pthread_create(&thread1, NULL, from_start, input));
-    assert(!pthread_create(&thread2, NULL, till_end, input));
+    if (pthread_create(&thread1, NULL, from_start, input)) {
+        printf("Pthread error\n");
+        return -1;
+    }
+    if (pthread_create(&thread2, NULL, till_end, input)) {
+        printf("Pthread error\n");
+        return -1;
+    }
     pthread_join(thread1, NULL);
     pthread_join(thread2, NULL);
     if (buffer_start)
@@ -90,14 +108,19 @@ int parallel_str_search(char* input) {
     return data.max_counted;
 }
 
-double parallel_search(char* input) {
+int parallel_search(char* input) {
+    if (NULL == input) {
+        printf("Empty input\n");
+        return -1;
+    }
     clock_t begin = clock();
-    char* string_mass = (char*)malloc(MB100);
-    assert(string_mass);
+    char* string_mass = (char*)malloc(strlen(input) * sizeof(char) + 1);
+    if (!string_mass) {
+        printf("Malloc error\n");
+        return -1;
+    }
     strcpy(string_mass, input);
-    parallel_str_search(string_mass);
-    clock_t end = clock();
-    double output = (double)(end - begin)/CLOCKS_PER_SEC;
+    int output =  parallel_str_search(string_mass);
     free(string_mass);
     return output;
 }

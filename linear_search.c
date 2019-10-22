@@ -7,7 +7,10 @@
 
 
 int linear_str_search(char* input) {
-    int i = 0, count = 0, max_counted = 0, state = 0;
+    int i = 0;
+    int count = 0;
+    int max_counted = 0;
+    int state = 0;
     while (input[i] != '\0') {
         if (input[i] == '\'') {
             if (state) {
@@ -27,14 +30,18 @@ int linear_str_search(char* input) {
     return max_counted;
 }
 
-double linear_search(char* input) {
-    clock_t begin = clock();
-    char* string_mass = (char*)malloc(MB100);
-    assert(string_mass);
+int linear_search(char* input) {
+    if (NULL == input) {
+        printf("Empty input\n");
+        return -1;
+    }
+    char* string_mass = (char*)malloc(strlen(input)* sizeof(char) + 1);
+    if (!string_mass) {
+        printf("Malloc error\n");
+        return -1;
+    }
     strcpy(string_mass, input);
-    linear_str_search(string_mass);
-    clock_t end = clock();
-    double output = (double)(end - begin)/CLOCKS_PER_SEC;
+    int output = linear_str_search(string_mass);
     free(string_mass);
     return output;
 }

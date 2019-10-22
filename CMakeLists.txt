@@ -15,7 +15,8 @@ set(LibSourses linear_search.c parallel_search.c is_capital.c)
 add_library(MyLibStatic STATIC ${LibSourses})
 add_library(MyLibShared SHARED ${LibSourses})
 
-add_executable(IZ2 main.c)
+
+add_executable(IZ2  main.c)
 target_link_libraries(IZ2 ${CMAKE_THREAD_LIBS_INIT} MyLibStatic)
 
 

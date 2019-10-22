@@ -9,13 +9,12 @@ branches:
 
 before_install:
   - travis_retry sudo apt-get update -qq
-  - travis_retry sudo apt-get install -qq python-pygments python3-pip qt5-default qt5-qmake qtbase5-dev qtcreator libxml2-utils libpcre3 gdb unzip wx-common xmlstarlet python3-dev
+  - travis_retry sudo apt-get install -qq python-pygments python3-pip python3-dev
   - travis_retry python2 -m pip install --user pytest==4.6.4
   - travis_retry python2 -m pip install --user pylint
   - travis_retry python2 -m pip install --user unittest2
   - travis_retry python2 -m pip install --user pexpect
   - travis_retry python3 -m pip install --user pytest
-
 install:
   - sudo apt-get install cppcheck
 matrix:
