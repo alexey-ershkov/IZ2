@@ -27,6 +27,7 @@ TEST(test_linear_search, test3) {
     ASSERT_EQ(6, linear_str_search(input));
 }
 
+
 TEST(test_parallel_search, test1) {
     char input[10] = "'Abc'habc";
     ASSERT_EQ(3, parallel_str_search(input));
@@ -42,6 +43,7 @@ TEST(test_parallel_search, test3) {
     char input[10] = "a'Bchabc'";
     ASSERT_EQ(6, parallel_str_search(input));
 }
+
 
 int main(int argc, char *argv[]) {
     ::testing::InitGoogleTest(&argc, argv);

@@ -11,6 +11,7 @@ include_directories(headers/)
 find_package (Threads)
 
 set(LibSourses linear_search.c parallel_search.c is_capital.c)
+set(CMAKE_C_FLAGS "-Wall -Werror -Wpedantic")
 
 add_library(MyLibStatic STATIC ${LibSourses})
 add_library(MyLibShared SHARED ${LibSourses})

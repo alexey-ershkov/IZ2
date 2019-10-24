@@ -19,7 +19,7 @@ int linear_str_search(char* input) {
                     max_counted = count;
                     count = 0;
                 }
-            } else if (!state && is_capital(input[i+1])) {
+            } else if (state == 0 && is_capital(input[i+1])) {
                 state = 1;
             }
         } else if (state) {
