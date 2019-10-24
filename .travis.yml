@@ -1,0 +1,133 @@
+language: c
+dist: trusty
+sudo: true
+
+branches:
+  only:
+    - master
+    - working
+
+before_install:
+  - travis_retry sudo apt-get update -qq
+  - travis_retry sudo apt-get install -qq python-pygments python3-pip python3-dev
+  - travis_retry python2 -m pip install --user pytest==4.6.4
+  - travis_retry python2 -m pip install --user pylint
+  - travis_retry python2 -m pip install --user unittest2
+  - travis_retry python2 -m pip install --user pexpect
+  - travis_retry python3 -m pip install --user pytest
+install:
+  - sudo apt-get install cppcheck
+matrix:
+  include:
+
+    - os: linux
+      env:
+        - TEST="Clang"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang
+            - gcc
+            - g++
+      compiler: clang
+      script:
+        - cmake CMakeLists.txt
+        - make
+        - make IZ2
+
+    - os: linux
+      env:
+        - TEST="UnitTest"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang
+            - gcc
+            - g++
+      compiler: clang
+      script:
+        - cmake CMakeLists.txt
+        - make
+        - ctest
+
+    - os: linux
+      env:
+        - TEST="Valgrind"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - gcc
+            - g++
+            - valgrind
+      compiler: clang
+      script:
+        - cmake CMakeLists.txt
+        - make
+        - ctest -T memcheck
+
+    - os: linux
+      env:
+        - TEST="Codecov"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - gcc
+            - g++
+      compiler: clang
+      script:
+        - cmake -DENABLE_COVERAGE=ON
+        - make
+        - make IZ2
+        - cd ..
+        - bash <(curl -s https://codecov.io/bash)
+
+
+    - os: linux
+      env:
+        - TEST="Cpplint"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - python
+            - gcc
+            - g++
+      compiler:
+        - clang
+      script:
+        - python cpplint.py --filter=-build/include_subdir,-legal/copyright,-runtime/printf,-readability/casting gtest.cpp is_capital.c linear_search.c main.c parallel_search.c
+
+
+    - os: linux
+      env:
+        - TEST="CppCheck"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang
+            - python
+            - gcc
+            - g++
+      compiler:
+        - clang
+      script:
+        - cppcheck gtest.cpp is_capiltal.c linear_search.c main.c parallel_search.c
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
